@@ -73,7 +73,8 @@ public class GitHubOrgBrowserApplication extends Application<GitHubOrgBrowserCon
         final RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("https://api.github.com")
                 .build();
-        final GitHubService gitHubService = new RetrofitGitHubService(restAdapter, env.getObjectMapper());
+        final GitHubService gitHubService = new RetrofitGitHubService(restAdapter, env.getObjectMapper(), 
+                env.metrics());
         env.jersey().register(new IndexResource());
         env.jersey().register(new OrgReposResource(gitHubService));
         env.jersey().register(new RepoCommitsResource(gitHubService));

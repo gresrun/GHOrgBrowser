@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import retrofit.RestAdapter;
 
+import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
@@ -55,7 +56,7 @@ public class RetrofitGitHubServiceTest {
                 .build();
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JodaModule());
-        this.service = new RetrofitGitHubService(restAdapter, objectMapper);
+        this.service = new RetrofitGitHubService(restAdapter, objectMapper, new MetricRegistry());
     }
 
     @Test

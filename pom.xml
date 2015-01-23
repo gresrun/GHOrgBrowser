@@ -256,16 +256,6 @@
             <version>1.9.0</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.oltu.oauth2</groupId>
-            <artifactId>org.apache.oltu.oauth2.client</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.9</version>
-        </dependency>
-        <dependency>
             <groupId>org.stefanutti.metrics.aspectj</groupId>
             <artifactId>metrics-aspectj</artifactId>
             <version>1.0.0-rc.5</version>

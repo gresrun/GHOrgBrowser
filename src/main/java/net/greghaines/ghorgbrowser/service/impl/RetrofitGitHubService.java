@@ -40,6 +40,7 @@ import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -89,6 +90,7 @@ public class RetrofitGitHubService implements GitHubService {
     }
 
     private final ObjectMapper objectMapper;
+    private final MetricRegistry registry;
     private final RetrofitInterface retrofitInterface;
     private final JavaType listRepoJavaType;
     private final JavaType listCommitJavaType;
@@ -97,12 +99,23 @@ public class RetrofitGitHubService implements GitHubService {
      * Constructor.
      * @param restAdapter the Retrofit REST adapter
      * @param objectMapper the Jackson object mapper
+     * @param registry the metrics registry
      */
-    public RetrofitGitHubService(final RestAdapter restAdapter, final ObjectMapper objectMapper) {
+    public RetrofitGitHubService(final RestAdapter restAdapter, final ObjectMapper objectMapper, 
+            final MetricRegistry registry) {
         this.objectMapper = objectMapper;
+        this.registry = registry;
         this.retrofitInterface = restAdapter.create(RetrofitInterface.class);
         this.listRepoJavaType = this.objectMapper.getTypeFactory().constructType(TYPE_REF_LIST_REPO);
         this.listCommitJavaType = this.objectMapper.getTypeFactory().constructType(TYPE_REF_LIST_COMMIT);
+    }
+
+    /**
+     * Required for EL to find the metrics registry property for the @Metrics annotation.
+     * @return the metric registry
+     */
+    public MetricRegistry getRegistry() {
+        return this.registry;
     }
 
     /**
