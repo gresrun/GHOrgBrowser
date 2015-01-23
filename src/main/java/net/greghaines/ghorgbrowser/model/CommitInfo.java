@@ -90,4 +90,13 @@ public class CommitInfo {
     public void setCommentCount(final int commentCount) {
         this.commentCount = commentCount;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "CommitInfo [message=" + this.message + ", author=" + this.author + ", committer=" + this.committer
+                + ", commentCount=" + this.commentCount + "]";
+    }
 }

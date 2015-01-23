@@ -104,4 +104,13 @@ public class GitHubCommit {
     public void setCommitter(final Owner committer) {
         this.committer = committer;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "GitHubCommit [sha=" + this.sha + ", htmlUrl=" + this.htmlUrl + ", commit=" + this.commit + ", author="
+                + this.author + ", committer=" + this.committer + "]";
+    }
 }

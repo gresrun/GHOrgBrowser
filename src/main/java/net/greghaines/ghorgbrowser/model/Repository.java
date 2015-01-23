@@ -152,4 +152,14 @@ public class Repository {
     public void setSize(final int size) {
         this.size = size;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Repository [owner=" + this.owner + ", fullName=" + this.fullName + ", description=" + this.description
+                + ", htmlUrl=" + this.htmlUrl + ", forksCount=" + this.forksCount + ", stargazersCount="
+                + this.stargazersCount + ", watchersCount=" + this.watchersCount + ", size=" + this.size + "]";
+    }
 }

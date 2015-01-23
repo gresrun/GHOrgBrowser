@@ -72,4 +72,12 @@ public class Owner {
     public void setAvatarUrl(final String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Owner [login=" + this.login + ", htmlUrl=" + this.htmlUrl + ", avatarUrl=" + this.avatarUrl + "]";
+    }
 }

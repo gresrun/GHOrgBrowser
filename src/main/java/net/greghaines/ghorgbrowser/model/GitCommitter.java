@@ -74,4 +74,12 @@ public class GitCommitter {
     public void setDate(final DateTime date) {
         this.date = date;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "GitCommitter [name=" + this.name + ", email=" + this.email + ", date=" + this.date + "]";
+    }
 }

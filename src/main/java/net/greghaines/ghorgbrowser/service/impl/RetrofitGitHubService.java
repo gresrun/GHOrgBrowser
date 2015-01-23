@@ -16,8 +16,14 @@
 package net.greghaines.ghorgbrowser.service.impl;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.eclipse.jetty.util.MultiMap;
+import org.eclipse.jetty.util.UrlEncoded;
 
 import net.greghaines.ghorgbrowser.model.GitHubCommit;
 import net.greghaines.ghorgbrowser.model.PaginatedResponse;
@@ -29,6 +35,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Header;
 import retrofit.client.Response;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
@@ -58,6 +65,7 @@ public class RetrofitGitHubService implements GitHubService {
          * @param perPage the number of results per page (up to 100)
          * @return response with the list of repositories
          */
+        @Headers("Accept: application/vnd.github.v3+json")
         @GET("/orgs/{orgName}/repos")
         Response listOrganizationRepos(@Path("orgName") String orgName, @Query("page") int page, 
                 @Query("per_page") int perPage);
@@ -70,6 +78,7 @@ public class RetrofitGitHubService implements GitHubService {
          * @param perPage the number of results per page (up to 100)
          * @return the response with the list of commits
          */
+        @Headers("Accept: application/vnd.github.v3+json")
         @GET("/repos/{ownerName}/{repoName}/commits")
         Response listRepoCommits(@Path("ownerName") String ownerName, @Path("repoName") String repoName,
                 @Query("page") int page, @Query("per_page") int perPage);
@@ -101,6 +110,7 @@ public class RetrofitGitHubService implements GitHubService {
         final PaginatedResponse<Repository> pResponse;
         try {
             final Response response = this.retrofitInterface.listOrganizationRepos(orgName, page, perPage);
+            checkStatusCode(response.getStatus(), "Unknown organization: " + orgName);
             final List<Repository> repos = this.objectMapper.readValue(response.getBody().in(), 
                     this.listRepoJavaType);
             pResponse = new PaginatedResponse<>(repos, page, perPage, findLastPage(response));
@@ -128,7 +138,15 @@ public class RetrofitGitHubService implements GitHubService {
         return pResponse;
     }
 
-    private static Integer findLastPage(final Response response) {
+    private static void checkStatusCode(final int respStatus, final String notFoundMsg) throws GitHubException {
+        if (respStatus == 404) {
+            throw new GitHubException(notFoundMsg);
+        } else if (respStatus != 200) {
+            throw new GitHubException("Error while communicating with GitHub: " + respStatus);
+        }
+    }
+
+    private static Integer findLastPage(final Response response) throws MalformedURLException {
         Header linkHeader = null;
         for (final Header header : response.getHeaders()) {
             if ("Link".equals(header.getName())) {
@@ -143,9 +161,15 @@ public class RetrofitGitHubService implements GitHubService {
                 final String[] relParts = SEMICOLON_PATTERN.split(rel);
                 final String relType = EQUAL_PATTERN.split(relParts[1].trim())[1].trim();
                 if ("\"last\"".equals(relType)) {
-                    // FIXME: Ugly!
-                    final String linkUrl = relParts[0];
-                    lastPage = Integer.valueOf(linkUrl.substring(linkUrl.length() - 2, linkUrl.length() - 1));
+                    final String linkUrl = relParts[0].trim();
+                    final URL url = new URL(linkUrl.substring(1, linkUrl.length()));
+                    final MultiMap<String> params = new MultiMap<String>();
+                    UrlEncoded.decodeTo(url.getQuery(), params, StandardCharsets.UTF_8, 10);
+                    final String pageStr = params.getValue("page", 0);
+                    if (pageStr != null) {
+                        lastPage = Integer.valueOf(pageStr);
+                    }
+                    break;
                 }
             }
         }
