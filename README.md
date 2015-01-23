@@ -12,6 +12,10 @@ This project requires Java 7+. Download the latest source at:
 
 Example usage:
 
+```bash
+mvn clean install && java -jar target/ghorgbrowser-1.0.0-SNAPSHOT.jar server config/development.yml
+```
+
 ***
 
 ## License
