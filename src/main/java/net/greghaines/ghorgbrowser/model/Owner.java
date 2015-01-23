@@ -39,7 +39,7 @@ public class Owner {
     }
 
     /**
-     * @param name the owner login to set
+     * @param login the owner login to set
      */
     public void setLogin(final String login) {
         this.login = login;

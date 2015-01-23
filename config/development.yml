@@ -1,0 +1,14 @@
+# Development Configuration
+
+## Logging
+logging:
+  level: DEBUG
+  appenders:
+    - type: console
+      threshold: INFO
+      target: stderr
+    - type: file
+      threshold: DEBUG
+      currentLogFilename: ./logs/ghorgbrowser.log
+      archivedLogFilenamePattern: ./logs/ghorgbrowser-%d.log.gz
+      archivedFileCount: 5

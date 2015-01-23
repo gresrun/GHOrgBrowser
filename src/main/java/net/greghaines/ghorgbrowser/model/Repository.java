@@ -26,6 +26,8 @@ public class Repository {
 
     @JsonProperty
     private Owner owner;
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("full_name")
     private String fullName;
     @JsonProperty
@@ -33,13 +35,13 @@ public class Repository {
     @JsonProperty("html_url")
     private String htmlUrl;
     @JsonProperty("forks_count")
-    private int forksCount;
+    private Integer forksCount;
     @JsonProperty("stargazers_count")
-    private int stargazersCount;
+    private Integer stargazersCount;
     @JsonProperty("watchers_count")
-    private int watchersCount;
+    private Integer watchersCount;
     @JsonProperty
-    private int size;
+    private Integer size;
 
     /**
      * @return the owner
@@ -53,6 +55,20 @@ public class Repository {
      */
     public void setOwner(final Owner owner) {
         this.owner = owner;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(final String name) {
+        this.name = name;
     }
 
     /**
@@ -100,56 +116,56 @@ public class Repository {
     /**
      * @return the forks count
      */
-    public int getForksCount() {
+    public Integer getForksCount() {
         return this.forksCount;
     }
 
     /**
      * @param forksCount the forks count to set
      */
-    public void setForksCount(final int forksCount) {
+    public void setForksCount(final Integer forksCount) {
         this.forksCount = forksCount;
     }
 
     /**
      * @return the stargazers count
      */
-    public int getStargazersCount() {
+    public Integer getStargazersCount() {
         return this.stargazersCount;
     }
 
     /**
      * @param stargazersCount the stargazers count to set
      */
-    public void setStargazersCount(final int stargazersCount) {
+    public void setStargazersCount(final Integer stargazersCount) {
         this.stargazersCount = stargazersCount;
     }
 
     /**
      * @return the watchers count
      */
-    public int getWatchersCount() {
+    public Integer getWatchersCount() {
         return this.watchersCount;
     }
 
     /**
      * @param watchersCount the watchers count to set
      */
-    public void setWatchersCount(final int watchersCount) {
+    public void setWatchersCount(final Integer watchersCount) {
         this.watchersCount = watchersCount;
     }
 
     /**
      * @return the size
      */
-    public int getSize() {
+    public Integer getSize() {
         return this.size;
     }
 
     /**
      * @param size the size to set
      */
-    public void setSize(final int size) {
+    public void setSize(final Integer size) {
         this.size = size;
     }
 
@@ -158,8 +174,9 @@ public class Repository {
      */
     @Override
     public String toString() {
-        return "Repository [owner=" + this.owner + ", fullName=" + this.fullName + ", description=" + this.description
-                + ", htmlUrl=" + this.htmlUrl + ", forksCount=" + this.forksCount + ", stargazersCount="
-                + this.stargazersCount + ", watchersCount=" + this.watchersCount + ", size=" + this.size + "]";
+        return "Repository [owner=" + this.owner + ", name=" + this.name + ", fullName=" + this.fullName 
+                + ", description=" + this.description + ", htmlUrl=" + this.htmlUrl + ", forksCount=" 
+                + this.forksCount + ", stargazersCount=" + this.stargazersCount + ", watchersCount=" 
+                + this.watchersCount + ", size=" + this.size + "]";
     }
 }

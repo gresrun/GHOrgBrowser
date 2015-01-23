@@ -40,7 +40,6 @@ public abstract class AbstractView extends View {
 
     /**
      * Constructor.
-     * @param user the logged in user or null
      * @param templateName the name of the template
      * @param additionalJS additional JavaScript imports
      */

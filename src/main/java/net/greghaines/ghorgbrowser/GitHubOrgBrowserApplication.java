@@ -20,6 +20,11 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import net.greghaines.ghorgbrowser.resource.IndexResource;
+import net.greghaines.ghorgbrowser.resource.OrgReposResource;
+import net.greghaines.ghorgbrowser.service.GitHubService;
+import net.greghaines.ghorgbrowser.service.impl.RetrofitGitHubService;
+import retrofit.RestAdapter;
 
 import com.bazaarvoice.dropwizard.webjars.WebJarBundle;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
@@ -64,6 +69,11 @@ public class GitHubOrgBrowserApplication extends Application<GitHubOrgBrowserCon
      */
     @Override
     public void run(final GitHubOrgBrowserConfiguration config, final Environment env) {
-        // TODO
+        final RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("https://api.github.com")
+                .build();
+        final GitHubService gitHubService = new RetrofitGitHubService(restAdapter, env.getObjectMapper());
+        env.jersey().register(new IndexResource());
+        env.jersey().register(new OrgReposResource(gitHubService));
     }
 }

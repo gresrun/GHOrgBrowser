@@ -1,0 +1,42 @@
+{{> header}}
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Repositories</h2>
+          {{^repos.empty}}
+          <div class="table-responsive">
+            <table class="table table-condensed table-striped">
+              <thead>
+                  <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th># Stars</th>
+                      <th># Forks</th>
+                      <th># Watchers</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+              {{#repos}}
+                <tr>
+                  <td><a href="/repos/{{owner.login}}/{{name}}/commits">{{fullName}}</a></td>
+                  <td>{{description}}</td>
+                  <td>{{stargazersCount}}</td>
+                  <td>{{forksCount}}</td>
+                  <td>{{watchersCount}}</td>
+                  <td><a href="{{htmlUrl}}" class="btn btn-xs btn-default" target="_new"><span class="glyphicon glyphicon-cloud-upload"></span> View on GitHub</a></td>
+                </tr>
+              {{/repos}}
+              </tbody>
+            </table>
+          </div>
+          {{/repos.empty}}
+          {{^repos}}
+          <div class="text-center well-small">
+            <div class="center-block">
+              <em><strong>No Repositories Found for "{{orgName}}"</strong></em>
+            </div>
+          </div>
+          {{/repos}}
+        </div>
+      </div>
+{{> footer}}

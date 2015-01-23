@@ -31,7 +31,7 @@ public class CommitInfo {
     @JsonProperty
     private GitCommitter committer;
     @JsonProperty("comment_count")
-    private int commentCount;
+    private Integer commentCount;
 
     public CommitInfo(){}
 
@@ -80,14 +80,14 @@ public class CommitInfo {
     /**
      * @return the comment count
      */
-    public int getCommentCount() {
+    public Integer getCommentCount() {
         return this.commentCount;
     }
 
     /**
      * @param commentCount the comment count to set
      */
-    public void setCommentCount(final int commentCount) {
+    public void setCommentCount(final Integer commentCount) {
         this.commentCount = commentCount;
     }
 
