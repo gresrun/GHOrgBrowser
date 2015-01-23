@@ -22,6 +22,7 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import net.greghaines.ghorgbrowser.resource.IndexResource;
 import net.greghaines.ghorgbrowser.resource.OrgReposResource;
+import net.greghaines.ghorgbrowser.resource.RepoCommitsResource;
 import net.greghaines.ghorgbrowser.service.GitHubService;
 import net.greghaines.ghorgbrowser.service.impl.RetrofitGitHubService;
 import retrofit.RestAdapter;
@@ -75,5 +76,6 @@ public class GitHubOrgBrowserApplication extends Application<GitHubOrgBrowserCon
         final GitHubService gitHubService = new RetrofitGitHubService(restAdapter, env.getObjectMapper());
         env.jersey().register(new IndexResource());
         env.jersey().register(new OrgReposResource(gitHubService));
+        env.jersey().register(new RepoCommitsResource(gitHubService));
     }
 }

@@ -15,7 +15,7 @@
  */
 package net.greghaines.ghorgbrowser.resource;
 
-import java.util.Collections;
+import io.dropwizard.jersey.params.IntParam;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -26,24 +26,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import net.greghaines.ghorgbrowser.model.GitHubCommit;
 import net.greghaines.ghorgbrowser.model.PaginatedResponse;
-import net.greghaines.ghorgbrowser.model.Repository;
 import net.greghaines.ghorgbrowser.service.GitHubException;
 import net.greghaines.ghorgbrowser.service.GitHubService;
-import net.greghaines.ghorgbrowser.utils.ReflectivePropertyComparator;
-import net.greghaines.ghorgbrowser.utils.ReflectivePropertyComparator.SortDirection;
-import net.greghaines.ghorgbrowser.view.OrgReposView;
+import net.greghaines.ghorgbrowser.view.RepoCommitsView;
 
 import com.codahale.metrics.annotation.Metered;
 import com.codahale.metrics.annotation.Timed;
 
 /**
- * OrgReposResource serves the list of organization repositories.
+ * RepoCommitsResource serves the list of commits for a repository.
  */
-@Path("/org/{orgName}/repos")
+@Path("/repos/{orgName}/{repoName}/commits")
 @Produces(MediaType.TEXT_HTML)
 @Consumes(MediaType.TEXT_HTML)
-public class OrgReposResource {
+public class RepoCommitsResource {
 
     private final GitHubService gitHubService;
 
@@ -51,17 +49,19 @@ public class OrgReposResource {
      * Constructor.
      * @param gitHubService the GitHub service
      */
-    public OrgReposResource(final GitHubService gitHubService) {
+    public RepoCommitsResource(final GitHubService gitHubService) {
         this.gitHubService = gitHubService;
     }
 
     @GET
     @Timed(name = "get.timer")
     @Metered(name = "get.meter")
-    public OrgReposView getOrgReposView(@PathParam("orgName") final String orgName, 
-            @QueryParam("sortBy") @DefaultValue("stargazersCount") final String sortBy) throws GitHubException {
-        final PaginatedResponse<Repository> repoResp = this.gitHubService.listOrganizationRepos(orgName, 1, 100);
-        Collections.sort(repoResp.getElements(), new ReflectivePropertyComparator(sortBy, SortDirection.DESC));
-        return new OrgReposView(orgName, repoResp.getElements().isEmpty() ? null : repoResp.getElements());
+    public RepoCommitsView getRepoCommitsView(@PathParam("orgName") final String orgName, 
+            @PathParam("repoName") final String repoName, 
+            @QueryParam("page") @DefaultValue("1") final IntParam page,
+            @QueryParam("perPage") @DefaultValue("30") final IntParam perPage) throws GitHubException {
+        final PaginatedResponse<GitHubCommit> commits = 
+                this.gitHubService.listRepoCommits(orgName, repoName, page.get(), perPage.get());
+        return new RepoCommitsView(orgName, repoName, commits);
     }
 }

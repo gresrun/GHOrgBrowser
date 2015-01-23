@@ -1,0 +1,53 @@
+{{> header}}
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Commits for <a href="/org/{{orgName}}/repos">{{orgName}}</a>/{{repoName}}</h2>
+          {{^commits.empty}}
+          <div class="table-responsive">
+            <table class="table table-condensed table-striped">
+              <thead>
+                  <tr>
+                      <th>Commit Date</th>
+                      <th>Message</th>
+                      <th>Author</th>
+                      <th>SHA</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+              {{#commits}}
+                <tr>
+                  <td>{{#dateFormat}}{{commit.committer.date}}{{/dateFormat}}</td>
+                  <td>{{commit.message}}</td>
+                  {{#author}}
+                  <td><a href="{{author.htmlUrl}}"><img src="{{author.avatarUrl}}" alt="{{author.login}} Avatar" class="img-rounded" style="margin-right: 5px, width: 24px; height: 24px;"/><span class="text-right">{{author.login}}<span></a></td>
+                  {{/author}}
+                  {{^author}}
+                  <td>{{commit.committer.name}}</td>
+                  {{/author}}
+                  <td>{{#shortSHA}}{{sha}}{{/shortSHA}}</td>
+                  <td><a href="{{htmlUrl}}" class="btn btn-xs btn-default" target="_new"><span class="glyphicon glyphicon-cloud-upload"></span> View on GitHub</a></td>
+                </tr>
+              {{/commits}}
+              </tbody>
+            </table>
+          </div>
+          <nav>
+            <ul class="pager">
+              {{^firstPage}}
+              <li><a href="/repos/{{orgName}}/{{repoName}}/commits?page={{prevPage}}&perPage={{perPage}}">Previous</a></li>
+              {{/firstPage}}
+              <li><a href="/repos/{{orgName}}/{{repoName}}/commits?page={{nextPage}}&perPage={{perPage}}">Next</a></li>
+            </ul>
+          </nav>
+          {{/commits.empty}}
+          {{^commits}}
+          <div class="text-center well-small">
+            <div class="center-block">
+              <em><strong>No Commits Found for "{{orgName}}/{{repoName}}"</strong></em>
+            </div>
+          </div>
+          {{/commits}}
+        </div>
+      </div>
+{{> footer}}

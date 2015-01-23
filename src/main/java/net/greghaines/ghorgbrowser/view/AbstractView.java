@@ -61,6 +61,21 @@ public abstract class AbstractView extends View {
     }
 
     /**
+     * @return a function for formatting SHA hashes into an shorter format 
+     */
+    public Function<String,String> shortSHA() {
+        return new Function<String, String>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public String apply(final String input) {
+                return input.substring(0, 7);
+            }
+        };
+    }
+
+    /**
      * @return a function for formatting timestamps into an easier-to-read format 
      */
     public Function<String,String> dateFormat() {
