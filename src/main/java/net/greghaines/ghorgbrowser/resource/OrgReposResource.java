@@ -55,6 +55,13 @@ public class OrgReposResource {
         this.gitHubService = gitHubService;
     }
 
+    /**
+     * Show the OrgReposView.
+     * @param orgName the organization name
+     * @param sortBy the sort criteria
+     * @return the view
+     * @throws GitHubException if there was a problem communicating with GitHub
+     */
     @GET
     @Timed(name = "get.timer")
     @Metered(name = "get.meter")

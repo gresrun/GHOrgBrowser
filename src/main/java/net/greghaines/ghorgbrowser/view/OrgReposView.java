@@ -27,6 +27,11 @@ public class OrgReposView extends AbstractView {
     private final String orgName;
     private final List<Repository> repos;
 
+    /**
+     * Constructor.
+     * @param orgName the organization name
+     * @param repos the repositories
+     */
     public OrgReposView(final String orgName, final List<Repository> repos) {
         super("orgRepos");
         this.orgName = orgName;

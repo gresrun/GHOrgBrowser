@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
+import org.stefanutti.metrics.aspectj.Metrics;
 
 import net.greghaines.ghorgbrowser.model.GitHubCommit;
 import net.greghaines.ghorgbrowser.model.PaginatedResponse;
@@ -39,6 +40,8 @@ import retrofit.http.Headers;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
+import com.codahale.metrics.annotation.Metered;
+import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +49,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * RetrofitGitHubService communicates with GitHub via their REST API using Retrofit.
  */
+@Metrics(registry = "${this.registry}")
 public class RetrofitGitHubService implements GitHubService {
 
     private static final TypeReference<List<Repository>> TYPE_REF_LIST_REPO = 
@@ -104,6 +108,8 @@ public class RetrofitGitHubService implements GitHubService {
     /**
      * {@inheritDoc}
      */
+    @Timed(name = "listOrganizationRepos.timer")
+    @Metered(name = "listOrganizationRepos.meter")
     @Override
     public PaginatedResponse<Repository> listOrganizationRepos(final String orgName, final int page, 
             final int perPage) throws GitHubException {
@@ -123,6 +129,8 @@ public class RetrofitGitHubService implements GitHubService {
     /**
      * {@inheritDoc}
      */
+    @Timed(name = "listRepoCommits.timer")
+    @Metered(name = "listRepoCommits.meter")
     @Override
     public PaginatedResponse<GitHubCommit> listRepoCommits(final String ownerName, final String repoName, 
             final int page, final int perPage) throws GitHubException {

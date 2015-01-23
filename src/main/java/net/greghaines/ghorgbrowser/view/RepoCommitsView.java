@@ -29,6 +29,12 @@ public class RepoCommitsView extends AbstractView {
     private final String repoName;
     private final PaginatedResponse<GitHubCommit> response;
 
+    /**
+     * Constructor.
+     * @param orgName the organization name
+     * @param repoName the repository name
+     * @param response the paginated response
+     */
     public RepoCommitsView(final String orgName, final String repoName, 
             final PaginatedResponse<GitHubCommit> response) {
         super("repoCommits");

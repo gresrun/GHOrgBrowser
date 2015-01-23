@@ -40,6 +40,10 @@ import com.codahale.metrics.annotation.Timed;
 @Consumes(MediaType.TEXT_HTML)
 public class IndexResource {
 
+    /**
+     * The welcome page.
+     * @return index view
+     */
     @GET
     @Timed(name = "html.timer")
     @Metered(name = "html.meter")
@@ -47,12 +51,17 @@ public class IndexResource {
         return new IndexView();
     }
 
+    /**
+     * Handle the search form.
+     * @param orgName the organization name
+     * @param sortBy the sort criteria
+     * @return a redirect to the OrgReposResource
+     */
     @POST
     @Timed(name = "form.timer")
     @Metered(name = "form.meter")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response formCreate(@FormParam("orgName") final String orgName,
-            @FormParam("sortBy") final String sortBy) throws NoSuchMethodException {
+    public Response formCreate(@FormParam("orgName") final String orgName, @FormParam("sortBy") final String sortBy) {
         final URI newURI = UriBuilder.fromResource(OrgReposResource.class)
                 .queryParam("sortBy", sortBy)
                 .build(orgName);

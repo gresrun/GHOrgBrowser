@@ -53,6 +53,15 @@ public class RepoCommitsResource {
         this.gitHubService = gitHubService;
     }
 
+    /**
+     * Show the RepoCommitsView.
+     * @param orgName the organization name
+     * @param repoName the repository name
+     * @param page the page offset
+     * @param perPage the commits per page
+     * @return the view
+     * @throws GitHubException if there was a problem communicating with GitHub
+     */
     @GET
     @Timed(name = "get.timer")
     @Metered(name = "get.meter")
